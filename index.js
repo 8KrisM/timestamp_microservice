@@ -12,11 +12,12 @@ app.get("/", function(req, res) {
 
 app.get("/api/:date?", function(req, res) {
   const paramDate = req.params.date;
-  let date;
+  let date = new Date();
+  if(!req.params.date) res.json({ unix: Number(date.getTime()), utc: date.toUTCString() });
   if (!isNaN(paramDate)) date = new Date(Number(req.params.date));
   else date = new Date(req.params.date);
-  if (date.toString() === "Invalid Date") res.json({ err: date.toString() });
-  else res.json({ unix: date.getTime(), utc: date });
+  if (date.toString() === "Invalid Date") res.json({ error: date.toString() });
+  else res.json({ unix: Number(date.getTime()), utc: date.toUTCString() });
 });
 
 
